@@ -9,12 +9,11 @@ use App\Models\ToDoReader;
 
 
 
-$name= $_POST['name'];
 
 $comments = $_POST['comments'];
 ob_clean();
 $fp = fopen("todo.csv","a");
-$cvsData = $name . ";" .  $comments ."\n";
+$cvsData =  $comments ."\n";
 if($fp) {
 
     fwrite($fp, $cvsData);
@@ -24,8 +23,9 @@ if($fp) {
 
 
 $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
-    $r->addRoute('GET', '/', 'UserController');
     $r->addRoute('GET', '/out', 'ToDoController');
+    $r->addRoute('GET', '/', 'UserController');
+
 
 
 
@@ -55,14 +55,15 @@ switch ($routeInfo[0]) {
         $vars = $routeInfo[2];
         $controller = 'App\Controllers\\'.$handler;
 
+        $controller = new UserController;
+        $controller->index();
 
         $controller=new ToDoController;
       $controller->index2();
 
 
 
-      $controller = new UserController;
-      $controller->index();
+
         break;
 
 }
